@@ -1,36 +1,21 @@
-#(©)CodeXBotz
+import os
+import redis
 
+REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
+REDIS_PORT = int(os.environ.get("REDIS_PORT", 6379))
+REDIS_DB = int(os.environ.get("REDIS_DB", 0))
 
+# Connect to Redis
+redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
 
-
-import pymongo, os
-from config import DB_URI, DB_NAME
-
-
-dbclient = pymongo.MongoClient(DB_URI)
-database = dbclient[DB_NAME]
-
-
-user_data = database['users']
-
-
-
-async def present_user(user_id : int):
-    found = user_data.find_one({'_id': user_id})
-    return bool(found)
+async def present_user(user_id: int):
+    return redis_client.exists(user_id)
 
 async def add_user(user_id: int):
-    user_data.insert_one({'_id': user_id})
-    return
+    redis_client.set(user_id, 1)
 
 async def full_userbase():
-    user_docs = user_data.find()
-    user_ids = []
-    for doc in user_docs:
-        user_ids.append(doc['_id'])
-        
-    return user_ids
+    return [int(key) for key in redis_client.keys()]
 
 async def del_user(user_id: int):
-    user_data.delete_one({'_id': user_id})
-    return
+    redis_client.delete(user_id)
