@@ -1,9 +1,9 @@
 import os
 import redis
 
-REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
-REDIS_PORT = int(os.environ.get("REDIS_PORT", 6379))
-REDIS_DB = int(os.environ.get("REDIS_DB", 0))
+REDIS_HOST = os.environ.get("REDIS_HOST", "redis-19153.c10.us-east-1-2.ec2.cloud.redislabs.com:19153")
+REDIS_PORT = int(os.environ.get("REDIS_PORT", 19153))
+REDIS_DB = int(os.environ.get("REDIS_DB", "f9Hstc2xMAI2FMGuLbGsn446LwsTM4c0"))
 
 # Connect to Redis
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
