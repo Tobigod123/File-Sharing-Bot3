@@ -28,7 +28,10 @@ OWNER_ID = int(os.environ.get("OWNER_ID", ""))
 PORT = os.environ.get("PORT", "8080")
 
 #Database 
-DB_URI = os.environ.get("DATABASE_URL", "")
+# Update Redis configuration
+REDIS_URL = os.environ.get("REDIS_URL", "localhost")  # Adjust the environment variable accordingly
+REDIS_PORT = int(os.environ.get("REDIS_PORT", 6379))  # Adjust the environment variable accordingly
+REDIS_PASS = os.environ.get("REDIS_PASS", "")  # Adjust the environment variable accordingly
 DB_NAME = os.environ.get("DATABASE_NAME", "filesharexbot")
 
 #force sub channel id, if you want enable force sub
