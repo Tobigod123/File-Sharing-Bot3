@@ -9,7 +9,11 @@ from pyrogram.enums import ParseMode
 import sys
 from datetime import datetime
 
-from config import API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, FORCE_SUB_CHANNEL, CHANNEL_ID, PORT
+from config import API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, 
+    FORCE_SUB_1,
+    FORCE_SUB_2,
+    FORCE_SUB_3,
+    FORCE_SUB_4,, CHANNEL_ID, PORT
 
 class Bot(Client):
     def __init__(self):
@@ -30,27 +34,108 @@ class Bot(Client):
         usr_bot_me = await self.get_me()
         self.uptime = datetime.now()
 
-        if FORCE_SUB_CHANNEL:
+        
+        if FORCE_SUB_1:
             try:
-                link = (await self.get_chat(FORCE_SUB_CHANNEL)).invite_link
+                info = await self.get_chat(FORCE_SUB_1)
+                link = info.invite_link
                 if not link:
-                    await self.export_chat_invite_link(FORCE_SUB_CHANNEL)
-                    link = (await self.get_chat(FORCE_SUB_CHANNEL)).invite_link
+                    await self.export_chat_invite_link(FORCE_SUB_1)
+                    link = info.invite_link
                 self.invitelink = link
+                self.LOGGER(__name__).info(
+                    "FORCE_SUB_1 Detected!\n"
+                    f"  Title: {info.title}\n"
+                    f"  Chat ID: {info.id}\n\n"
+                )
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
-                self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
-                self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL}")
-                self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/CodeXBotzSupport for support")
+                self.LOGGER(__name__).warning(
+                    f"Pastikan @{self.username} "
+                    "menjadi Admin di FORCE_SUB_1\n\n"
+                )
                 sys.exit()
+        if FORCE_SUB_2:
+            try:
+                info = await self.get_chat(FORCE_SUB_2)
+                link = info.invite_link
+                if not link:
+                    await self.export_chat_invite_link(FORCE_SUB_2)
+                    link = info.invite_link
+                self.invitelink2 = link
+                self.LOGGER(__name__).info(
+                    "FORCE_SUB_2 Detected!\n"
+                    f"  Title: {info.title}\n"
+                    f"  Chat ID: {info.id}\n\n"
+                )
+            except Exception as a:
+                self.LOGGER(__name__).warning(a)
+                self.LOGGER(__name__).warning(
+                    f"Pastikan @{self.username} "
+                    "menjadi Admin di FORCE_SUB_2\n\n"
+                )
+                sys.exit()
+        if FORCE_SUB_3:
+            try:
+                info = await self.get_chat(FORCE_SUB_3)
+                link = info.invite_link
+                if not link:
+                    await self.export_chat_invite_link(FORCE_SUB_1)
+                    link = info.invite_link
+                self.invitelink3 = link
+                self.LOGGER(__name__).info(
+                    "FORCE_SUB_3 Detected!\n"
+                    f"  Title: {info.title}\n"
+                    f"  Chat ID: {info.id}\n\n"
+                )
+            except Exception as a:
+                self.LOGGER(__name__).warning(a)
+                self.LOGGER(__name__).warning(
+                    f"Pastikan @{self.username} "
+                    "menjadi Admin di FORCE_SUB_3\n\n"
+                )
+                sys.exit()
+        if FORCE_SUB_4:
+            try:
+                info = await self.get_chat(FORCE_SUB_4)
+                link = info.invite_link
+                if not link:
+                    await self.export_chat_invite_link(FORCE_SUB_4)
+                    link = info.invite_link
+                self.invitelink4 = link
+                self.LOGGER(__name__).info(
+                    "FORCE_SUB_4 Detected!\n"
+                    f"  Title: {info.title}\n"
+                    f"  Chat ID: {info.id}\n\n"
+                )
+            except Exception as a:
+                self.LOGGER(__name__).warning(a)
+                self.LOGGER(__name__).warning(
+                    f"Pastikan @{self.username} "
+                    "menjadi Admin di FORCE_SUB_4\n\n"
+                )
+                sys.exit()
+
+
         try:
-            db_channel = await self.get_chat(CHANNEL_ID)
+            db_channel = await self.get_chat(CHANNEL_DB)
             self.db_channel = db_channel
-            test = await self.send_message(chat_id = db_channel.id, text = "Test Message")
+                    test = await self.send_message(chat_id=db_channel.id, text="Bot Aktif!\n\n")
+        await test.delete()
+        self.LOGGER(__name__).info(
+            "CHANNEL_DB Detected!\n"
+            f"  Title: {db_channel.title}\n"
+            f"  Chat ID: {db_channel.id}\n\n"
+        )
+
+        try:
+            db_channel = await self.get_chat(CHANNEL_DB)
+            self.db_channel = db_channel
+            test = await self.send_message(chat_id=db_channel.id, text="Test Message")
             await test.delete()
         except Exception as e:
             self.LOGGER(__name__).warning(e)
-            self.LOGGER(__name__).warning(f"Make Sure bot is Admin in DB Channel, and Double check the CHANNEL_ID Value, Current Value {CHANNEL_ID}")
+            self.LOGGER(__name__).warning(f"Make sure the bot is Admin in the DB Channel and double-check the CHANNEL_ID Value, Current Value: {CHANNEL_ID}")
             self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/CodeXBotzSupport for support")
             sys.exit()
 
