@@ -1,29 +1,74 @@
 #(©)Codexbotz
 
+import asyncio
 import base64
 import re
-import asyncio
 from pyrogram import filters
 from pyrogram.enums import ChatMemberStatus
-from config import FORCE_SUB_CHANNEL, ADMINS
-from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 from pyrogram.errors import FloodWait
+from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
+from config import (
+    ADMINS,
+    FORCE_SUB_1,
+    FORCE_SUB_2,
+    FORCE_SUB_3,
+    FORCE_SUB_4
+)
 
-async def is_subscribed(filter, client, update):
-    if not FORCE_SUB_CHANNEL:
+async def _sub1(filter, client, update):
+    if not FORCE_SUB_1:
         return True
     user_id = update.from_user.id
     if user_id in ADMINS:
         return True
     try:
-        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL, user_id = user_id)
+        member = await client.get_chat_member(chat_id=FORCE_SUB_1, user_id=user_id)
     except UserNotParticipant:
         return False
 
-    if not member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]:
-        return False
-    else:
+    return member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]
+
+
+async def _sub2(filter, client, update):
+    if not FORCE_SUB_2:
         return True
+    user_id = update.from_user.id
+    if user_id in ADMINS:
+        return True
+    try:
+        member = await client.get_chat_member(chat_id=FORCE_SUB_2, user_id=user_id)
+    except UserNotParticipant:
+        return False
+
+    return member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]
+    
+
+async def _sub3(filter, client, update):
+    if not FORCE_SUB_3:
+        return True
+    user_id = update.from_user.id
+    if user_id in ADMINS:
+        return True
+    try:
+        member = await client.get_chat_member(chat_id=FORCE_SUB_3, user_id=user_id)
+    except UserNotParticipant:
+        return False
+
+    return member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]
+    
+
+async def _sub4(filter, client, update):
+    if not FORCE_SUB_4:
+        return True
+    user_id = update.from_user.id
+    if user_id in ADMINS:
+        return True
+    try:
+        member = await client.get_chat_member(chat_id=FORCE_SUB_4, user_id=user_id)
+    except UserNotParticipant:
+        return False
+
+    return member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]
 
 async def encode(string):
     string_bytes = string.encode("ascii")
@@ -107,4 +152,8 @@ def get_readable_time(seconds: int) -> str:
     return up_time
 
 
-subscribed = filters.create(is_subscribed)
+sub1 = filters.create(_sub1)
+sub2 = filters.create(_sub2)
+sub3 = filters.create(_sub3)
+sub4 = filters.create(_sub4)
+subs = filters.create(is_subscribed)
